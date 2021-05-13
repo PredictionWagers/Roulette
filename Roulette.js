@@ -5,7 +5,7 @@ var gsGoodMetamaskNetwork = "kovan"
 var gnGoodNetworkID = 42
 var gsNetwork_prefix = "kovan."
 var gsNetwork_Name = "Kovan"
-var gcsContractAddress_Roulette = "0xD7665cfcf62037ab9e46e303CEd3722605FC3F2c";
+var gcsContractAddress_Roulette = "0x7b7e6EA61cCF498e1066AD8954Db8E275Bb4835F";
 var gcnEthToTokenMultiplier = 1000
 
 var gnBaseChipValue = .001;
@@ -107,7 +107,7 @@ async function DoCreateNewHouse2() {
     if (isNaN(nDeposit)) { nDeposit = 0 }
     if (isNaN(nMaxPayoutPerSpin)) { nMaxPayoutPerSpin = 0 }
     if (sUsername == '' || nDeposit <= 0 || nMaxPayoutPerSpin <= 0) {
-        alert("Please enter valid entries into the three textboxes.")
+        alert("Please complete the three textboxes.")
         return
     }
     if (nDeposit > gnUserETHBalance - .01) {
@@ -320,7 +320,7 @@ async function DoShowDataFromContract() {
             <table width=98% cellpadding=0 cellspacing=0><tr>
             <td><b><font color=maroon>Your House Balance</font>: ` + nData_Balance + `</b></td>
             <td align=center><a class=bluelink href='javascript:DoShowHouseReport()'><b>Detailed House Report</b></a></td>
-            <td align=right><b>Your House URL:</b> <input type=text readonly onclick='this.select()' style='width:480px;background:#ffd0ff' value=https://predictionwagers.github.io/v1.0/PredictionWagers.htm?house=` +
+            <td align=right><b>Your House URL:</b> <input type=text readonly onclick='this.select()' style='width:480px;background:#ffd0ff' value=https://predictionwagers.github.io/Roulette/?house=` +
             sData_Username + `></td></tr></table>
 			House Username (12 chars): <input type=text maxlength=12 id=idTxtEditHouse_Username style='width:120px' onKeyPress='return AlphaNumeric(event)' value=` + sData_Username + `>
 			&nbsp;Maximum Payout Per Spin: <input type=text maxlength=6 id=idTxtEditHouse_MaxPayoutPerSpin style='width:60px' onKeyPress='return NumericOnly(event)' value=` + nData_MaxPayoutPerSpin + `>
@@ -383,7 +383,7 @@ async function DoUpdateHouse2() {
     if (isNaN(nWithdrawal)) { nDeposit = 0 }
     if (isNaN(nMaxPayoutPerSpin)) { nMaxPayoutPerSpin = 0 }
     if (sUsername == '' || nMaxPayoutPerSpin <= 0) {
-        alert("Please enter valid entries into the first two textboxes.")
+        alert("Please complete the first two textboxes.")
         return
     }
     if (nDeposit > gnUserETHBalance - .01) {
