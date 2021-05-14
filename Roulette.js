@@ -244,7 +244,7 @@ function DoSubdivideArrays() {
     }
 }
 
-function DoChangeCmbChipValue() {
+function DoRemoveAllBets() {
     var nIndex, objElement
     for (nIndex = 0; nIndex < gnaSpacesClicked.length; nIndex++) {
         objElement = document.getElementById("idImgChip_" + gnaSpacesClicked[nIndex]);
@@ -253,6 +253,21 @@ function DoChangeCmbChipValue() {
 
     gnaSpacesClicked = []
     DoCalculateMaxProfit()
+}
+
+function DoChangeCmbChipValue() {
+    DoRemoveAllBets()
+}
+
+function DoChangeHouseDropdown() {
+    var nIndex
+    DoRemoveAllBets()
+    for (nIndex = 0; nIndex < garrHouses.length; nIndex++) {
+        if (garrHouses[nIndex].nHouseID == da.idCmbHouse.value) {
+            gnPublicMaxPayoutPerSpin = garrHouses[nIndex].nMaxPayoutPerSpin
+            break
+        }
+    }
 }
 
 function DoCalculateMaxProfit() {
@@ -333,13 +348,16 @@ async function DoShowDataFromContract() {
     garrHouses.sort((a, b) => (a.nBalance < b.nBalance) ? 1 : -1)
 
     sHTML = ""
+
     for (nIndex = 0; nIndex < garrHouses.length; nIndex++) {
         if (garrHouses[nIndex].nBalance > 0) {
+            if (sHTML == '') {
+                gnPublicMaxPayoutPerSpin = garrHouses[nIndex].nMaxPayoutPerSpin
+            }
             sHTML += "<option value=" + garrHouses[nIndex].nHouseID + ">" + garrHouses[nIndex].sUsername + "; Balance: " + garrHouses[nIndex].nBalance + "; Maximum Payout Per Spin: " + garrHouses[nIndex].nMaxPayoutPerSpin + "</option>"
-            gnPublicMaxPayoutPerSpin = garrHouses[nIndex].nMaxPayoutPerSpin
         }
     }
-    da.idSpanHouses.innerHTML = "<select id=idCmbHouse>" + sHTML + "</select>"
+    da.idSpanHouses.innerHTML = "<select id=idCmbHouse onChange=DoChangeHouseDropdown()>" + sHTML + "</select>"
 
 // If incoming parameters, set combo boxes
     urlParams = new URLSearchParams(window.location.search);
@@ -351,6 +369,7 @@ async function DoShowDataFromContract() {
                 for (nIndex2 = 0; nIndex2 < da.idCmbHouse.options.length; nIndex2++) {
                     if (da.idCmbHouse.options[nIndex2].value == garrHouses[nIndex].nHouseID) {
                         da.idCmbHouse.selectedIndex = nIndex2
+                        gnPublicMaxPayoutPerSpin = garrHouses[nIndex].nMaxPayoutPerSpin
                         break;
                     }
                 }
@@ -569,6 +588,9 @@ async function DoRefreshMetamask() {
             window.web3 = new Web3(ethereum);
             var accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             gsUserETHAccount = accounts[0]
+            // DEVTEST
+            console.log(accounts)
+
             gsCurrentNetwork = await web3.eth.net.getNetworkType()
             var nNetworkID = await web3.eth.net.getId()
             if (gsCurrentNetwork == gsGoodMetamaskNetwork && nNetworkID == gnGoodNetworkID) {
@@ -625,9 +647,13 @@ function DoBetClick(nIndex) {
     if (nMaxProfit > gnPublicMaxPayoutPerSpin) {
         alert("Your last bet caused the Maximum Payout (for Bets Placed) to exceed the House's \"Maximum Payout Per Spin\".")
         DoBetClick(nIndex)
+        return
     }
-
-    //DoCalculatePayout()
+    if (DoSafeDecimals(gnaSpacesClicked.length * da.idCmbChipValue.value) >= gnUserETHBalance) {
+        alert("Your last bet exceeded your Token Balance.")
+        DoBetClick(nIndex)
+        return
+    }
 }
 
 function DoRouletteClick(event) {
@@ -672,10 +698,6 @@ async function DoSpinWheel() {
         ).encodeABI()
         da.idSpanWorking_Image.innerHTML = "<center><img src=roulette_spinning.gif width=60%></center>"
         da.divOverlay_Working.style.paddingTop = 30
-
-        // DEVTEST
-        //da.divOverlay_Working.style.display = 'block';
-        //return
 
         await DoSendSignedTransaction(objData, nValue, gcsContractAddress_Roulette);
         if (!gbSendtransactionError) {
