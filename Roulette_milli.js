@@ -627,7 +627,7 @@ async function DoRefreshMetamask() {
                 "<input type=button value='Unlock " + gsFormattedUserETHBalance +
                 " in MILLI Tokens' onClick=DoUnlockTokens() style='background:navy;color:white;font-size:12px;font-weight:bold'>"
         } else {
-            da.idSpanMetaMaskStatus.innerHTML = "<i>Use <b>MetaMask</b> to select a <b>" + gsNetwork_Name + "</b> account with <b>MILLI</b> tokens, " +
+            da.idSpanMetaMaskStatus.innerHTML = "<i>Use <b>MetaMask</b> to select a <b>" + gsNetwork_Name + "</b> account with <a target=_ex href=https://www.TokenUp.app class=greenlink><b>MILLI Tokens</b></a>, " +
                 "then</i> <a class=bluelink href=\"javascript: DoHardMetamaskRefresh()\"><b>Refresh Metamask</b></a>."
         }
     }
