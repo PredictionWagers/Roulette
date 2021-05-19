@@ -35,11 +35,23 @@
                     setCookie("username", user, 30);
                 }
             }
+
         }
+
+        function DoGetNumberFromServer() {
+            var objXhttp = new XMLHttpRequest();
+            objXhttp.open('POST', 'https://www.TokenUp.app/CookieTest.php', false);
+            objXhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            objXhttp.send('nGetNumber=3');
+            console.log(objXhttp.response)
+        }
+
     </script>
 </head>
 
 <body onload="checkCookie()">
+    <input type=button value='Get Number From Server' onClick=DoGetNumberFromServer()>
+
 </body>
 
 </html>
