@@ -5,7 +5,7 @@ var gsGoodMetamaskNetwork = "kovan"
 var gnGoodNetworkID = 42
 var gsNetwork_prefix = "kovan."
 var gsNetwork_Name = "Kovan"
-var gcsContractAddress_Roulette = "0x10A6a586006839Cd50c19a6CEfD2501a4307539D";
+var gcsContractAddress_Roulette = "0x85C898ADc8Fc554557D76d60BB794AC1A63FE4A7";
 var gcnEthToTokenMultiplier = 1000
 
 var gcsContractAddress_MakeCoin = "0x4Eb71318c6260E95626cF0fD7886577252dC9523";
